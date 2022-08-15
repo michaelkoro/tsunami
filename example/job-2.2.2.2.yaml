@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tsunami-scanner-2.2.2.2
+  namespace: kube-system
+  labels:
+    jobgroup: tsunami-scanner
+spec:
+  template:
+    metadata:
+      name: tsunami-scanner
+      labels:
+        jobgroup: tsunami-scanner
+    spec:
+      containers:
+      - name: scanner
+        image: tsunami
+        args: ["sh", "-c", "--ip-v4-target=2.2.2.2"]
+      restartPolicy: Never

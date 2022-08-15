@@ -1,0 +1,30 @@
+{{- range .Values.servers }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $.Values.serviceName }}-{{ . }}
+  namespace: {{ $.Values.namespace }}
+  labels:
+    jobgroup: {{ $.Values.serviceName }}
+spec:
+  template:
+    metadata:
+      name: {{ $.Values.serviceName }}
+      labels:
+        jobgroup: {{ $.Values.serviceName }}
+    spec:
+      containers:
+      - name: scanner
+        image: {{ $.Values.image.repository }}
+        imagePullPolicy: {{ $.Values.image.pullPolicy }}
+        args: ["sh", "-c", "--ip-v4-target={{ . }}"]
+        resources: 
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      restartPolicy: Never
+---
+{{- end }}
