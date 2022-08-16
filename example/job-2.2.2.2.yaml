@@ -15,5 +15,6 @@ spec:
       containers:
       - name: scanner
         image: tsunami
+        imagePullPolicy: IfNotPresent
         args: ["sh", "-c", "--ip-v4-target=2.2.2.2"]
       restartPolicy: Never
